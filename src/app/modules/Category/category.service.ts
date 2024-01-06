@@ -10,12 +10,18 @@ const createCategoryIntoDB = async (payload: TCategory, _id: string) => {
 }
 
 const getAllCategoriesFromDB = async () => {
-  const result = await Category.find().populate('createdBy')
+  const result = await Category.find().populate({
+    path: 'createdBy',
+    select: 'username ',
+  })
   return result
 }
 
 const getSingleCategoryByIDFromDB = async (id: string) => {
-  const result = await Category.findById(id)
+  const result = await Category.findById(id).populate({
+    path: 'createdBy',
+    select: 'username ',
+  })
   return result
 }
 
