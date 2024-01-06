@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose'
 import { TProduct } from './product.interface'
 import { Review } from '../Review/review.model'
 import { TReview } from '../Review/review.interface'
+import { number } from 'zod'
 
 const productSchema = new Schema<TProduct>(
   {
@@ -63,11 +64,24 @@ const productSchema = new Schema<TProduct>(
 //review bug will be fixed
 // review wont show when fetching all products
 
-productSchema.virtual('reviews').get(async function () {
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'productID',
+})
+
+productSchema.virtual('averageRating').get(async function () {
   const result: TReview[] = await Review.find({
     productID: this._id,
-  }).select('review rating createdAt createdBy')
-  return result
+  }).select('rating')
+
+  if (result.length === 0) {
+    return 0 // Return 0 if there are no reviews
+  }
+
+  const totalRating = result.reduce((sum, review) => sum + review.rating, 0)
+  return totalRating / result.length
 })
+
 
 export const Product = model<TProduct>('Product', productSchema)

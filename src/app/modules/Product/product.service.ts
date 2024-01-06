@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AppError from '../../error/AppError'
 import { Category } from '../Category/category.model'
 import { Review } from '../Review/review.model'
@@ -28,10 +29,24 @@ const getAllProductsFromDB = async () => {
       path: 'addedBy',
       select: 'username',
     })
+    .populate({
+      // by virtual from product.model.ts
+      path: 'reviews',
+      select: 'review rating createdAt createdBy',
+    })
+  const productsWithAverageRating = await Promise.all(
+    result.map(async (product) => {
+      const averageRating = await product
+        .populate('reviews')
+        .then((populatedProduct: any) => populatedProduct.averageRating) // Update the type declaration of populatedProduct
+      return {
+        ...product.toJSON(),
+        averageRating,
+      }
+    }),
+  )
 
-  //review bug will be fixed
-  // review wont show when fetching all products
-  return result
+  return productsWithAverageRating
 }
 const getSingleProductFromDB = async (id: string) => {
   const result = await Product.findById(id)
