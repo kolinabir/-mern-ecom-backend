@@ -145,7 +145,16 @@ const changePasswordToServer = async (
   return userRes
 }
 
+const checkAuthentication = async (user: JwtPayload) => {
+  const userExists = await User.findById(user._id)
+  if (!userExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This User not found')
+  }
+  return userExists
+}
+
 export const AuthServices = {
   loginUser,
   changePasswordToServer,
+  checkAuthentication,
 }

@@ -21,7 +21,6 @@ const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
         //check if token exists
-        console.log(token);
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized to access this route');
         }

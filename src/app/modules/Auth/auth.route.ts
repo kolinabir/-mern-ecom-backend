@@ -27,4 +27,10 @@ router.post(
   UserController.createUser,
 )
 
+router.get(
+  '/check-auth',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  AuthController.checkAuthentication,
+)
+
 export const AuthRoute = router

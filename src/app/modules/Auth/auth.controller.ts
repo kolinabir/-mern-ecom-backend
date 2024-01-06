@@ -26,7 +26,18 @@ const changePassword = catchAsync(async (req, res) => {
   })
 })
 
+const checkAuthentication = catchAsync(async (req, res) => {
+  const result = await AuthServices.checkAuthentication(req.user)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is authenticated',
+    data: req.user,
+  })
+})
+
 export const AuthController = {
   loginUser,
   changePassword,
+  checkAuthentication,
 }

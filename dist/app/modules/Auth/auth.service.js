@@ -115,7 +115,15 @@ const changePasswordToServer = (user, passwordData) => __awaiter(void 0, void 0,
     const userRes = yield user_model_1.User.findById(user._id).select('-__v');
     return userRes;
 });
+const checkAuthentication = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    const userExists = yield user_model_1.User.findById(user._id);
+    if (!userExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This User not found');
+    }
+    return userExists;
+});
 exports.AuthServices = {
     loginUser,
     changePasswordToServer,
+    checkAuthentication,
 };
