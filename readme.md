@@ -8,12 +8,14 @@
 
 ##### It'll take this data from frontend / demo data
 
-`{
-    "username": "user",
-    "email": "user@user.com",
-    "password": "securePassword1",
-    "role": "user" // role could be admin too
-}`
+```json
+{
+  "username": "user",
+  "email": "user@user.com",
+  "password": "securePassword1",
+  "role": "user" // role could be admin too
+}
+```
 
 ## Login Route
 
@@ -23,16 +25,14 @@
 
 ##### Demo data
 
-`{
-    "username": "user",
-    "password": "securePassword1"
-}`
+```json
+{
+  "username": "user",
+  "password": "securePassword1"
+}
+```
 
 ##### It'll return - demo
-
-`{
-
-}`
 
 ```json
  "success": true,
@@ -44,6 +44,39 @@
             "email": "admin@admin.com",
             "role": "admin"
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTk4NTA3OWI2YzM3OWFmZDJmNjQyMmIiLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwNDU0NjUzNTM1NCwiZXhwIjoxNzA0NTQ2NTM4OTU0fQ.ybfzElebb7ObIB_5855G47UXpL8zNhyFCvZnITLpWzg"
+        "token": "Demo"  // jwt token
     }
 ```
+
+#### Change Password Route
+
+`http://localhost:5000/api/auth/change-password`
+
+**Must Pass the JWT from frontend**
+
+##### Demo data
+
+```json
+{
+  "oldPassword": "securePassword1",
+  "newPassword": "securePassword3"
+}
+```
+
+##### Demo Returned Values
+
+```json
+{
+  "success": true,
+  "message": "Password changed successfully",
+  "data": {
+    "_id": "65985079b6c379afd2f6422b",
+    "username": "admin",
+    "email": "admin@admin.com",
+    "role": "admin",
+    "createdAt": "2024-01-05T18:54:49.742Z",
+    "updatedAt": "2024-01-06T13:14:24.843Z"
+  }
+}
+```
+
