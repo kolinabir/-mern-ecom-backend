@@ -17,7 +17,15 @@ const createReviewIntoDB = async (payload: TReview, _id: string) => {
 }
 
 const getAllReviewsFromDB = async () => {
-  const result = await Review.find().populate('productID')
+  const result = await Review.find()
+    .populate({
+      path: 'productID',
+      select: 'title price categoryID quantity',
+    })
+    .populate({
+      path: 'createdBy',
+      select: 'username',
+    })
   return result
 }
 

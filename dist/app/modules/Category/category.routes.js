@@ -12,6 +12,6 @@ const router = (0, express_1.Router)();
 router.post('/', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), category_controllers_1.CategoryControllers.createCategory);
 router.get('/', category_controllers_1.CategoryControllers.getAllCategories);
 router.get('/:id', category_controllers_1.CategoryControllers.getSingleCategoryByID);
-router.patch('/:id', category_controllers_1.CategoryControllers.updateCategoryByID);
-router.delete('/:id', category_controllers_1.CategoryControllers.deleteCategoryByID);
+router.patch('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), category_controllers_1.CategoryControllers.updateCategoryByID);
+router.delete('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), category_controllers_1.CategoryControllers.deleteCategoryByID);
 exports.categoryRoutes = router;

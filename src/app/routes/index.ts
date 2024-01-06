@@ -1,8 +1,6 @@
 import { Router } from 'express'
 import { categoryRoutes } from '../modules/Category/category.routes'
-import { coursesRoutes } from '../modules/Course/course.routes'
 import { reviewRoutes } from '../modules/Review/review.routes'
-import { coursesCustomRoutes } from '../modules/Course/courses.routes'
 import { AuthRoute } from '../modules/Auth/auth.route'
 import { productRoutes } from '../modules/Product/product.routes'
 

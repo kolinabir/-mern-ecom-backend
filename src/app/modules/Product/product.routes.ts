@@ -15,7 +15,7 @@ router.post(
 )
 router.get('/', ProductControllers.getAllProducts)
 router.get('/:id', ProductControllers.getSingleProduct)
-router.patch('/:id', ProductControllers.updateProduct)
-router.delete('/:id', ProductControllers.deleteProduct)
+router.patch('/:id', auth(USER_ROLE.admin), ProductControllers.updateProduct)
+router.delete('/:id', auth(USER_ROLE.admin), ProductControllers.deleteProduct)
 
 export const productRoutes = router

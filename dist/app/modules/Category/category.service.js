@@ -16,11 +16,17 @@ const createCategoryIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0,
     return result;
 });
 const getAllCategoriesFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield category_model_1.Category.find().populate('createdBy');
+    const result = yield category_model_1.Category.find().populate({
+        path: 'createdBy',
+        select: 'username ',
+    });
     return result;
 });
 const getSingleCategoryByIDFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield category_model_1.Category.findById(id);
+    const result = yield category_model_1.Category.findById(id).populate({
+        path: 'createdBy',
+        select: 'username ',
+    });
     return result;
 });
 const updateCategoryByIDFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
