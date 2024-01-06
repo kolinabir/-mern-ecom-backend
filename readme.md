@@ -31,7 +31,11 @@
 ##### It'll return - demo
 
 `{
-    "success": true,
+
+}`
+
+```json
+ "success": true,
     "message": "Login successfully",
     "data": {
         "user": {
@@ -42,4 +46,4 @@
         },
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTk4NTA3OWI2YzM3OWFmZDJmNjQyMmIiLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwNDU0NjUzNTM1NCwiZXhwIjoxNzA0NTQ2NTM4OTU0fQ.ybfzElebb7ObIB_5855G47UXpL8zNhyFCvZnITLpWzg"
     }
-}`
+```
