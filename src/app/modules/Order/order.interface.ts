@@ -10,13 +10,12 @@ export type TOrder = {
   customerName: string
   district: string
   thana: string
-  quantity: number
-  address?: string
+  address: string
   phoneNumber: string
-  TotalPrice: number
+  totalPrice: number
   email?: string
   additionalInfo?: string
   status?: 'pending' | 'cancelled' | 'delivered' | 'processing'
-  userId?: Types.ObjectId
+  orderedBy?: Types.ObjectId
   orderedDate?: Date
 }

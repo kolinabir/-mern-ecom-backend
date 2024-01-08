@@ -76,13 +76,9 @@ const OrderSchema = new Schema<TOrder>({
       enum: 'Invalid status',
     },
   },
-  userId: {
+  orderedBy: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: 'User',
-    errorMessages: {
-      required: 'User ID is required',
-    },
   },
   orderedDate: {
     type: Date,

@@ -588,3 +588,188 @@ _GET_
   ]
 }
 ```
+
+## Order ROute
+
+#### Create/Add new Order
+
+_POST_
+
+**Registered User and Non Register user Can Order**
+
+> If jwt is available, Just pass the jwt with the json data , rest will be managed by backend. otherwise dont pass jwt.
+
+`http://localhost:5000/api/order`
+
+##### DEMO Data
+
+```json
+{
+  "products": [
+    {
+      "productId": "659c13e11b156fbacbb9b050",
+      "quantity": 2
+    }
+  ],
+  "customerName": "John Doe",
+  "district": "Sample District",
+  "thana": "Sample Thana",
+  "address": "123 Main Street",
+  "phoneNumber": 1234567890,
+  "email": "john.doe@example.com",
+  "additionalInfo": "Please handle with care",
+  "status": "pending"
+}
+```
+
+##### DEMO Returned Data
+
+```json
+{
+  "success": true,
+  "message": "Product Ordered successfully",
+  "data": {
+    "products": [
+      {
+        "productId": "659c13e11b156fbacbb9b050",
+        "quantity": 2,
+        "_id": "659c13eb1b156fbacbb9b055"
+      }
+    ],
+    "customerName": "John Doe",
+    "district": "Sample District",
+    "thana": "Sample Thana",
+    "address": "123 Main Street",
+    "phoneNumber": "1234567890",
+    "email": "john.doe@example.com",
+    "additionalInfo": "Please handle with care",
+    "status": "pending",
+    "orderedBy": "6598572c764d4dba9cafaca7", // null , if user is not logged in
+    "_id": "659c13eb1b156fbacbb9b054",
+    "orderedDate": "2024-01-08T15:25:31.347Z",
+    "__v": 0
+  }
+}
+```
+
+#### GET ALL Product Routes
+
+**Only Admin can see all Orders**
+
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+
+##### Get All Orders
+
+`http://localhost:5000/api/order`
+
+###### DEMo returned Data
+
+```json
+{
+  "success": true,
+  "message": "All orders fetched successfully",
+  "data": [
+    {
+      "_id": "659c13eb1b156fbacbb9b054",
+      "products": [
+        {
+          "productId": "659c13e11b156fbacbb9b050",
+          "quantity": 2,
+          "_id": "659c13eb1b156fbacbb9b055"
+        }
+      ],
+      "customerName": "John Doe",
+      "district": "Sample District",
+      "thana": "Sample Thana",
+      "address": "123 Main Street",
+      "phoneNumber": "1234567890",
+      "email": "john.doe@example.com",
+      "additionalInfo": "Please handle with care",
+      "status": "pending",
+      "orderedBy": "6598572c764d4dba9cafaca7",
+      "orderedDate": "2024-01-08T15:25:31.347Z"
+    }
+  ]
+}
+```
+
+##### Get All orders of a single Product (by id)
+
+_It'll show all the orders of that product_
+`http://localhost:5000/api/order?products.productId=659c13e11b156fbacbb9b050`
+
+###### DEMo returned Data
+
+```json
+{
+  "success": true,
+  "message": "All orders fetched successfully",
+  "data": [
+    {
+      "_id": "659c13eb1b156fbacbb9b054",
+      "products": [
+        {
+          "productId": "659c13e11b156fbacbb9b050",
+          "quantity": 2,
+          "_id": "659c13eb1b156fbacbb9b055"
+        }
+      ],
+      "customerName": "John Doe",
+      "district": "Sample District",
+      "thana": "Sample Thana",
+      "address": "123 Main Street",
+      "phoneNumber": "1234567890",
+      "email": "john.doe@example.com",
+      "additionalInfo": "Please handle with care",
+      "status": "pending",
+      "orderedBy": "6598572c764d4dba9cafaca7",
+      "orderedDate": "2024-01-08T15:25:31.347Z"
+    }
+  ]
+}
+```
+
+##### Get All orders By "'pending' | 'cancelled' | 'delivered' | 'processing'
+
+###### Get Pending Orders
+
+`http://localhost:5000/api/order?status=pending`
+
+###### Get canceller Orders
+
+`http://localhost:5000/api/order?status=cancelled`
+
+###### Get delivered Orders
+
+`http://localhost:5000/api/order?status=delivered`
+
+###### Get processing Orders
+
+`http://localhost:5000/api/order?status=processing`
+
+##### Get All orders By orderedBy(registered User who ordered)
+
+`http://localhost:5000/api/order?orderedBy=6598572c764d4dba9cafaca7`
+
+##### Get All orders By PhoneNO
+
+`http://localhost:5000/api/order?phoneNumber=01234512345`
+
+##### Get All orders By Sorting
+
+_use '-' for descending _
+_By OrderDate_
+`http://localhost:5000/api/order?sort=-orderedDate`
+`http://localhost:5000/api/order?sort=orderedDate` // ascending
+
+_You can sort by any of the properties_
+
+##### Paginate By Page and Limit
+
+_Here below- every page will contain 2 product _
+`http://localhost:5000/api/order?page=3&limit=2`
+
+##### You can combine as well
+
+`http://localhost:5000/api/order?status=pending&sort=-createdAt&page=2&limit=3`
