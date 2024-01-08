@@ -652,7 +652,7 @@ _POST_
 }
 ```
 
-#### GET ALL Product Routes
+#### GET ALL Order
 
 **Only Admin can see all Orders**
 
@@ -773,3 +773,18 @@ _Here below- every page will contain 2 product _
 ##### You can combine as well
 
 `http://localhost:5000/api/order?status=pending&sort=-createdAt&page=2&limit=3`
+
+#### GET any order by ID
+
+_Only Admin and the user who ordered that can view_
+_Don't forget to pass jwt_
+
+`http://localhost:5000/api/order/:orderID`
+
+#### GET all orders of an User
+
+_Only the user who ordered and Admin can view this_
+_here id is userID_
+_Don't forget to pass jwt_
+
+`http://localhost:5000/api/order/user/:userId`

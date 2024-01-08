@@ -5,6 +5,7 @@ import { TOrder } from './order.interface'
 import { Order } from './order.model'
 import { Product } from '../Product/product.model'
 import QueryBuilder from '../../builder/queryBuilder'
+import { JwtPayload } from 'jsonwebtoken'
 
 const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
   const { products } = payload
@@ -48,7 +49,33 @@ const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
   return result
 }
 
+const getSingleOrderFromDB = async (id: string, user: JwtPayload) => {
+  const result = await Order.findById(id)
+  if (user.role === 'user') {
+    const isOrderBelongsToUser = result?.orderedBy?.toString() === user._id
+    if (!isOrderBelongsToUser) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+    }
+  }
+  return result
+}
+
+const getAllOrdersOfAnUserFromDB = async (id: string, user: JwtPayload) => {
+  const result = await Order.find({ orderedBy: id })
+  if (user.role === 'user') {
+    result.forEach((order) => {
+      const isOrderBelongsToUser = order?.orderedBy?.toString() === user._id
+      if (!isOrderBelongsToUser) {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+      }
+    })
+  }
+  return result
+}
+
 export const orderService = {
   addNewOrderIntoDB,
   getAllOrdersFromDB,
+  getSingleOrderFromDB,
+  getAllOrdersOfAnUserFromDB,
 }

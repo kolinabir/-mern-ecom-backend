@@ -21,5 +21,16 @@ router.post(
 )
 
 router.get('/', auth(USER_ROLE.admin), orderController.getAllOrders)
+router.get(
+  '/:id',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  orderController.getSingleOrder,
+)
+
+router.get(
+  '/user/:id',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  orderController.getAllOrdersOfAnUser,
+)
 
 export const orderRoutes = router
