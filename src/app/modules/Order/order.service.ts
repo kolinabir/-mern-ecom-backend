@@ -61,7 +61,11 @@ const getSingleOrderFromDB = async (id: string, user: JwtPayload) => {
 }
 
 const getAllOrdersOfAnUserFromDB = async (id: string, user: JwtPayload) => {
-  const result = await Order.find({ orderedBy: id })
+  const result = await Order.find({ orderedBy: id }).populate({
+    path: 'products.productId',
+    select:
+      'title price image description category sellerName size color companyName',
+  })
   if (user.role === 'user') {
     result.forEach((order) => {
       const isOrderBelongsToUser = order?.orderedBy?.toString() === user._id

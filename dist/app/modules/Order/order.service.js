@@ -66,7 +66,10 @@ const getSingleOrderFromDB = (id, user) => __awaiter(void 0, void 0, void 0, fun
     return result;
 });
 const getAllOrdersOfAnUserFromDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.Order.find({ orderedBy: id });
+    const result = yield order_model_1.Order.find({ orderedBy: id }).populate({
+        path: 'products.productId',
+        select: 'title price image description category sellerName size color companyName',
+    });
     if (user.role === 'user') {
         result.forEach((order) => {
             var _a;
