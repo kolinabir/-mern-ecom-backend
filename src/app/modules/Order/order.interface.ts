@@ -18,4 +18,5 @@ export type TOrder = {
   status?: 'pending' | 'cancelled' | 'delivered' | 'processing'
   orderedBy?: Types.ObjectId
   orderedDate?: Date
+  cartAdded: boolean
 }

@@ -87,6 +87,9 @@ const OrderSchema = new Schema<TOrder>({
       default: 'Invalid ordered date',
     },
   },
+  cartAdded: {
+    type: Boolean,
+  },
 })
 
 export const Order = model('Order', OrderSchema)

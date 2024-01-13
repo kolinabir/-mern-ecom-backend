@@ -652,6 +652,161 @@ _POST_
 }
 ```
 
+#### Add cart
+
+_POST_
+
+`http://localhost:5000/api/order/addProductToCart`
+
+**Only Registered User Can Add Product to Cart**
+
+##### DEMO Data
+
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+-
+
+```json
+{
+  "products": [
+    {
+      "productId": "659c13e11b156fbacbb9b050",
+      "quantity": 2
+    }
+  ],
+  "customerName": "John Doe",
+  "district": "Sample District",
+  "thana": "Sample Thana",
+  "address": "123 Main Street",
+  "phoneNumber": 1234567890,
+  "email": "john.doe@example.com",
+  "additionalInfo": "Please handle with care",
+  "status": "pending"
+}
+```
+
+##### DEMO Returned Data
+
+```json
+{
+  "success": true,
+  "message": "Product added to cart successfully",
+  "data": {
+    "products": [
+      {
+        "productId": "659c5a3ed6c071d4fdd457fe",
+        "quantity": 2,
+        "_id": "65a22bf28464fd4a1f017579"
+      }
+    ],
+    "customerName": "John Doe",
+    "district": "Sample District",
+    "thana": "Sample Thana",
+    "address": "123 Main Street",
+    "phoneNumber": "1234567890",
+    "email": "john.doe@example.com",
+    "additionalInfo": "Please handle with care",
+    "status": "pending",
+    "orderedBy": "659c261690fa55c73a62d78d",
+    "cartAdded": true,
+    "_id": "65a22bf28464fd4a1f017578",
+    "orderedDate": "2024-01-13T06:21:38.230Z",
+    "__v": 0
+  }
+}
+```
+
+#### Get All Cart Products of An User
+
+_GET_
+
+`http://localhost:5000/api/order/user/cart/659c261690fa55c73a62d78d`
+
+**Only Registered User or The Admin Can view items which are added to Cart**
+
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+
+##### DEMO Returned Data
+
+```json
+{
+  "success": true,
+  "message": "All Cart Items fetched successfully",
+  "data": {
+    "orders": [
+      {
+        "_id": "65a22bf28464fd4a1f017578",
+        "products": [
+          {
+            "productId": {
+              "_id": "659c5a3ed6c071d4fdd457fe",
+              "title": "Jeans - Shorts",
+              "price": 1,
+              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+              "description": "This is updated description here",
+              "category": "659960c1ae471dbdae02e5c8",
+              "companyName": "The Brother Company",
+              "color": "Blind ddd",
+              "averageRating": {},
+              "id": "659c5a3ed6c071d4fdd457fe"
+            },
+            "quantity": 2,
+            "_id": "65a22bf28464fd4a1f017579"
+          }
+        ],
+        "customerName": "John Doe",
+        "district": "Sample District",
+        "thana": "Sample Thana",
+        "address": "123 Main Street",
+        "phoneNumber": "1234567890",
+        "email": "john.doe@example.com",
+        "additionalInfo": "Please handle with care",
+        "status": "pending",
+        "orderedBy": "659c261690fa55c73a62d78d",
+        "cartAdded": true,
+        "orderedDate": "2024-01-13T06:21:38.230Z",
+        "__v": 0
+      },
+      {
+        "_id": "65a22e524b59d0b6aa35a1f5",
+        "products": [
+          {
+            "productId": {
+              "_id": "659c5a3ed6c071d4fdd457fe",
+              "title": "Jeans - Shorts",
+              "price": 1,
+              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+              "description": "This is updated description here",
+              "category": "659960c1ae471dbdae02e5c8",
+              "companyName": "The Brother Company",
+              "color": "Blind ddd",
+              "averageRating": {},
+              "id": "659c5a3ed6c071d4fdd457fe"
+            },
+            "quantity": 2,
+            "_id": "65a22e524b59d0b6aa35a1f6"
+          }
+        ],
+        "customerName": "John Doe",
+        "district": "Sample District",
+        "thana": "Sample Thana",
+        "address": "123 Main Street",
+        "phoneNumber": "1234567890",
+        "email": "john.doe@example.com",
+        "additionalInfo": "Please handle with care",
+        "status": "pending",
+        "orderedBy": "659c261690fa55c73a62d78d",
+        "cartAdded": true,
+        "orderedDate": "2024-01-13T06:31:47.000Z",
+        "__v": 0
+      }
+    ],
+    "totalPrice": 4
+  }
+}
+```
+
 #### GET ALL Order
 
 **Only Admin can see all Orders**
@@ -659,9 +814,9 @@ _POST_
 - Just pass the jwt with the json data , rest will be managed by backend
 -
 
-##### Get All Orders
+##### Get All Orders || Which are not added in the Cart
 
-`http://localhost:5000/api/order`
+`http://localhost:5000/api/order?cartAdded=false`
 
 ###### DEMo returned Data
 

@@ -20,6 +20,13 @@ router.post(
   orderController.addNewOrder,
 )
 
+router.post(
+  '/addProductToCart',
+  auth(USER_ROLE.user),
+  validateRequest(orderValidateSchema.createOrderValidationSchema),
+  orderController.addNewProductToCart,
+)
+
 router.get('/', auth(USER_ROLE.admin), orderController.getAllOrders)
 router.get(
   '/:id',
@@ -31,6 +38,11 @@ router.get(
   '/user/:id',
   auth(USER_ROLE.admin, USER_ROLE.user),
   orderController.getAllOrdersOfAnUser,
+)
+router.get(
+  '/user/cart/:id',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  orderController.getAllCartItems,
 )
 
 export const orderRoutes = router
