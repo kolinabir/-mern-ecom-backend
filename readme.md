@@ -778,6 +778,7 @@ _Here below- every page will contain 2 product _
 
 _Only Admin and the user who ordered that can view_
 _Don't forget to pass jwt_
+_Total Price of those products_
 
 `http://localhost:5000/api/order/:orderID`
 

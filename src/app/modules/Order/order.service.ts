@@ -74,7 +74,16 @@ const getAllOrdersOfAnUserFromDB = async (id: string, user: JwtPayload) => {
       }
     })
   }
-  return result
+  let totalPrice: number = 0
+  result?.forEach((order) => {
+    order?.products?.forEach((product) => {
+      totalPrice += product?.quantity * product?.productId?.price
+    })
+  })
+  return {
+    orders: result,
+    totalPrice,
+  }
 }
 
 export const orderService = {

@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-type TProducts = {
+export type TProducts = {
   productId: Types.ObjectId
   quantity: number
 }
