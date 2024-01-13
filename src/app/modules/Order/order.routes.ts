@@ -44,5 +44,10 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.user),
   orderController.getAllCartItems,
 )
+router.patch(
+  '/user/cartToOrder/:id',
+  auth(USER_ROLE.user),
+  orderController.cartItemToOrder,
+)
 
 export const orderRoutes = router

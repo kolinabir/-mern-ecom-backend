@@ -76,6 +76,19 @@ const addNewProductToCart = catchAsync(async (req, res) => {
     data: result,
   })
 })
+const cartItemToOrder = catchAsync(async (req, res) => {
+  const result = await orderService.cartItemToOrderIntoDB(
+    req.params.id,
+    req.user,
+  )
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product Ordered successfully',
+    data: result,
+  })
+})
 
 export const orderController = {
   addNewOrder,
@@ -84,4 +97,5 @@ export const orderController = {
   getAllOrdersOfAnUser,
   addNewProductToCart,
   getAllCartItems,
+  cartItemToOrder,
 }

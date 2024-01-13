@@ -143,6 +143,17 @@ const getAllCartItemsOfAnUserFromDB = async (id: string, user: JwtPayload) => {
   }
 }
 
+const cartItemToOrderIntoDB = async (id: string, user: JwtPayload) => {
+  const result = await Order.findByIdAndUpdate(id, { cartAdded: false })
+  if (user.role === 'user') {
+    const isOrderBelongsToUser = result?.orderedBy?.toString() === user._id
+    if (!isOrderBelongsToUser) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+    }
+  }
+  return result
+}
+
 export const orderService = {
   addNewOrderIntoDB,
   getAllOrdersFromDB,
@@ -150,4 +161,5 @@ export const orderService = {
   getAllOrdersOfAnUserFromDB,
   addNewProductToCartIntoDB,
   getAllCartItemsOfAnUserFromDB,
+  cartItemToOrderIntoDB,
 }

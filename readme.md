@@ -716,11 +716,23 @@ _POST_
 }
 ```
 
+
+#### Order product from Cart
+_PATCH_
+
+`http://localhost:5000/api/order/user/cartToOrder/:productId`
+
+**Registered User who added the product to the Cart, only he can Order the product**
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+
+
+
 #### Get All Cart Products of An User
 
 _GET_
 
-`http://localhost:5000/api/order/user/cart/659c261690fa55c73a62d78d`
+`http://localhost:5000/api/order/user/cart/:userID`
 
 **Only Registered User or The Admin Can view items which are added to Cart**
 
