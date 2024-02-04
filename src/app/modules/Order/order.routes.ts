@@ -28,6 +28,8 @@ router.post(
 )
 
 router.get('/', auth(USER_ROLE.admin), orderController.getAllOrders)
+router.get('/date', auth(USER_ROLE.admin), orderController.getOrderByMonth)
+
 router.get(
   '/:id',
   auth(USER_ROLE.admin, USER_ROLE.user),

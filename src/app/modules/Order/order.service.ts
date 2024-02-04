@@ -75,7 +75,10 @@ const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
     .sort()
     .paginate()
     .fields()
-  const result = await orderQuery.modelQuery
+  const result = await orderQuery.modelQuery.populate({
+    path: 'products.productId',
+    select: 'title price image',
+  })
   return result
 }
 
@@ -154,6 +157,62 @@ const cartItemToOrderIntoDB = async (id: string, user: JwtPayload) => {
   return result
 }
 
+const getOrderByMonthFromDB = async (
+  user: JwtPayload,
+  query: Record<string, unknown>,
+) => {
+  const { month, year, status } = query
+
+  // Ensure that month and year are provided
+  if (!month || !year) {
+    throw new Error('Month and year are required parameters.')
+  }
+
+  // Parse month and year as integers
+  const parsedMonth = parseInt(month as string, 10)
+  const parsedYear = parseInt(year as string, 10)
+
+  // Validate month and year values
+  if (
+    isNaN(parsedMonth) ||
+    isNaN(parsedYear) ||
+    parsedMonth < 1 ||
+    parsedMonth > 12
+  ) {
+    throw new Error('Invalid month or year value.')
+  }
+
+  // Calculate the start and end dates for the given month and year
+  const startDate = new Date(parsedYear, parsedMonth - 1, 1)
+  const endDate = new Date(parsedYear, parsedMonth, 0, 23, 59, 59, 999)
+
+  // Construct the query object for filtering by status
+  const statusQuery = status ? { status: status } : {}
+
+  // Fetch orders within the specified date range and status
+  const orders = await Order.find({
+    orderedDate: { $gte: startDate, $lte: endDate },
+    ...statusQuery,
+  })
+    .populate({
+      path: 'products.productId',
+      select: 'title price image',
+    })
+    .exec()
+
+  // Calculate the sum of all orders' prices
+  const totalOrderPrice = orders.reduce((total, order) => {
+    const orderTotal = order.products.reduce((productTotal, product) => {
+      const productPrice = product.productId?.price || 0
+      const quantity = product.quantity || 0
+      return productTotal + productPrice * quantity
+    }, 0)
+    return total + orderTotal
+  }, 0)
+
+  return { orders, totalOrderPrice }
+}
+
 export const orderService = {
   addNewOrderIntoDB,
   getAllOrdersFromDB,
@@ -162,4 +221,5 @@ export const orderService = {
   addNewProductToCartIntoDB,
   getAllCartItemsOfAnUserFromDB,
   cartItemToOrderIntoDB,
+  getOrderByMonthFromDB,
 }

@@ -716,17 +716,16 @@ _POST_
 }
 ```
 
-
 #### Order product from Cart
+
 _PATCH_
 
 `http://localhost:5000/api/order/user/cartToOrder/:productId`
 
 **Registered User who added the product to the Cart, only he can Order the product**
+
 - Just pass the jwt with the json data , rest will be managed by backend
 -
-
-
 
 #### Get All Cart Products of An User
 
@@ -818,6 +817,8 @@ _GET_
   }
 }
 ```
+
+## Dashboard
 
 #### GET ALL Order
 
@@ -956,3 +957,55 @@ _here id is userID_
 _Don't forget to pass jwt_
 
 `http://localhost:5000/api/order/user/:userId`
+
+#### GET all orders by month and year and status
+
+`http://localhost:5000/api/order/date?month=1&year=2024&status=delivered`
+
+_Only Admin can view this_
+_Don't forget to pass jwt_
+_It'll show all the orders of that month and year_
+_Also the combined total price of those products_
+
+
+##### DEMO Returned Data
+
+```json
+{
+    "success": true,
+    "message": "All orders fetched successfully",
+    "data": {
+        "orders": [
+            {
+                "_id": "659d404492133c6c4639ff6e",
+                "products": [
+                    {
+                        "productId": {
+                            "_id": "659c5a3ed6c071d4fdd457fe",
+                            "title": "Jeans - Shorts",
+                            "price": 1,
+                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+                            "averageRating": {},
+                            "id": "659c5a3ed6c071d4fdd457fe"
+                        },
+                        "quantity": 4444,
+                        "_id": "659d404492133c6c4639ff6f"
+                    }
+                ],
+                "customerName": "Admin not",
+                "district": "Khulna",
+                "thana": "Bogura",
+                "address": "0x7890706f001a2dc26ec1495f517edd18e339206b",
+                "phoneNumber": "1763902654",
+                "email": "user@user.com",
+                "additionalInfo": "dd",
+                "status": "delivered",
+                "orderedBy": "6598572c764d4dba9cafaca7",
+                "orderedDate": "2024-01-09T12:47:00.111Z",
+                "__v": 0
+            }
+        ],
+        "totalOrderPrice": 4444
+    }
+}
+```

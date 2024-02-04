@@ -90,6 +90,17 @@ const cartItemToOrder = catchAsync(async (req, res) => {
   })
 })
 
+const getOrderByMonth = catchAsync(async (req, res) => {
+  const result = await orderService.getOrderByMonthFromDB(req.user, req.query)
+  console.log(result)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All orders fetched successfully',
+    data: result,
+  })
+})
+
 export const orderController = {
   addNewOrder,
   getAllOrders,
@@ -98,4 +109,5 @@ export const orderController = {
   addNewProductToCart,
   getAllCartItems,
   cartItemToOrder,
+  getOrderByMonth,
 }
