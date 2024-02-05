@@ -78,10 +78,20 @@ const deleteProductFromDB = async (id: string) => {
   return result
 }
 
+const getProductByCategoryFromDB = async (id: string) => {
+  const result = await Product.find({ category: id }).populate({
+    path: 'category',
+    select: 'name',
+  })
+
+  return result
+}
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductFromDB,
   deleteProductFromDB,
+  getProductByCategoryFromDB,
 }

@@ -13,6 +13,8 @@ router.post(
   validateRequest(ProductValidations.createProductValidationSchema),
   ProductControllers.createNewProduct,
 )
+
+router.get('/category/:id', ProductControllers.getProductsByCategory)
 router.get('/', ProductControllers.getAllProducts)
 router.get('/:id', ProductControllers.getSingleProduct)
 router.patch('/:id', auth(USER_ROLE.admin), ProductControllers.updateProduct)
