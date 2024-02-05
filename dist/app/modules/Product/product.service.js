@@ -75,10 +75,18 @@ const deleteProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     const result = yield product_model_1.Product.findByIdAndDelete(id);
     return result;
 });
+const getProductByCategoryFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.find({ category: id }).populate({
+        path: 'category',
+        select: 'name',
+    });
+    return result;
+});
 exports.ProductServices = {
     createProductIntoDB,
     getAllProductsFromDB,
     getSingleProductFromDB,
     updateProductFromDB,
     deleteProductFromDB,
+    getProductByCategoryFromDB,
 };

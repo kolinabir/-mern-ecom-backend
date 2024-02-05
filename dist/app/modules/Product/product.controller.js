@@ -62,10 +62,20 @@ const deleteProduct = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
+const getProductsByCategory = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_service_1.ProductServices.getProductByCategoryFromDB(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'All products retrieved successfully',
+        data: result,
+    });
+}));
 exports.ProductControllers = {
     createNewProduct,
     getAllProducts,
     getSingleProduct,
     updateProduct,
     deleteProduct,
+    getProductsByCategory,
 };

@@ -361,6 +361,12 @@ _GET_
 
 `http://localhost:5000/api/product/:ID`
 `https://mern-ecom-backend-henna.vercel.app/api/product`
+#### GET All PRODUCT By CateogryID
+
+_GET_
+
+`http://localhost:5000/api/product/category/:id`
+`https://mern-ecom-backend-henna.vercel.app/api/product/category/:id`
 
 ##### DEMO returned Data
 

@@ -19,7 +19,11 @@ router.post('/', (req, res, next) => {
         next(); // unregister user also can order !!
     }
 }, (0, validateRequest_1.default)(order_validation_1.orderValidateSchema.createOrderValidationSchema), order_controller_1.orderController.addNewOrder);
+router.post('/addProductToCart', (0, auth_1.default)(user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(order_validation_1.orderValidateSchema.createOrderValidationSchema), order_controller_1.orderController.addNewProductToCart);
 router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), order_controller_1.orderController.getAllOrders);
+router.get('/date', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), order_controller_1.orderController.getOrderByMonth);
 router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), order_controller_1.orderController.getSingleOrder);
 router.get('/user/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), order_controller_1.orderController.getAllOrdersOfAnUser);
+router.get('/user/cart/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), order_controller_1.orderController.getAllCartItems);
+router.patch('/user/cartToOrder/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.user), order_controller_1.orderController.cartItemToOrder);
 exports.orderRoutes = router;

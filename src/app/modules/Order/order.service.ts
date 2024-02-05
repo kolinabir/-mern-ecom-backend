@@ -110,11 +110,14 @@ const getAllOrdersOfAnUserFromDB = async (id: string, user: JwtPayload) => {
     })
   }
   let totalPrice: number = 0
-  result?.forEach((order) => {
-    order?.products?.forEach((product) => {
-      totalPrice += product?.quantity * product?.productId?.price
-    })
-  })
+  for (const order of result) {
+    for (const product of order?.products || []) {
+      const productDetails = await Product.findById(product.productId)
+      if (productDetails) {
+        totalPrice += (product?.quantity || 0) * (productDetails?.price || 0)
+      }
+    }
+  }
   return {
     orders: result,
     totalPrice,
@@ -135,14 +138,18 @@ const getAllCartItemsOfAnUserFromDB = async (id: string, user: JwtPayload) => {
     })
   }
   let totalPrice: number = 0
-  result?.forEach((order) => {
-    order?.products?.forEach((product) => {
-      totalPrice += product?.quantity * product?.productId?.price
-    })
-  })
+  for (const order of result) {
+    for (const product of order?.products || []) {
+      const productDetails = await Product.findById(product.productId)
+      if (productDetails) {
+        totalPrice += (product?.quantity || 0) * (productDetails?.price || 0)
+      }
+    }
+  }
+
   return {
     orders: result,
-    totalPrice,
+    totalPrice: totalPrice,
   }
 }
 
@@ -201,16 +208,17 @@ const getOrderByMonthFromDB = async (
     .exec()
 
   // Calculate the sum of all orders' prices
-  const totalOrderPrice = orders.reduce((total, order) => {
-    const orderTotal = order.products.reduce((productTotal, product) => {
-      const productPrice = product.productId?.price || 0
-      const quantity = product.quantity || 0
-      return productTotal + productPrice * quantity
-    }, 0)
-    return total + orderTotal
-  }, 0)
+  let totalPrice: number = 0
+  for (const order of orders) {
+    for (const product of order.products) {
+      const productDetails = await Product.findById(product.productId)
+      if (productDetails) {
+        totalPrice += (product.quantity || 0) * (productDetails.price || 0)
+      }
+    }
+  }
 
-  return { orders, totalOrderPrice }
+  return { orders, totalPrice }
 }
 
 export const orderService = {

@@ -12,6 +12,7 @@ const validateRequest_1 = __importDefault(require("../../middleWares/validateReq
 const product_validation_1 = require("./product.validation");
 const router = (0, express_1.Router)();
 router.post('/', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), (0, validateRequest_1.default)(product_validation_1.ProductValidations.createProductValidationSchema), product_controller_1.ProductControllers.createNewProduct);
+router.get('/category/:id', product_controller_1.ProductControllers.getProductsByCategory);
 router.get('/', product_controller_1.ProductControllers.getAllProducts);
 router.get('/:id', product_controller_1.ProductControllers.getSingleProduct);
 router.patch('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), product_controller_1.ProductControllers.updateProduct);

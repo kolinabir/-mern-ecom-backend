@@ -88,5 +88,8 @@ const OrderSchema = new mongoose_1.Schema({
             default: 'Invalid ordered date',
         },
     },
+    cartAdded: {
+        type: Boolean,
+    },
 });
 exports.Order = (0, mongoose_1.model)('Order', OrderSchema);
