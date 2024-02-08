@@ -36,25 +36,21 @@ const addNewOrderIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, fu
         }));
     }
     const result = yield order_model_1.Order.create(Object.assign(Object.assign({}, payload), { orderedBy: _id, cartAdded: false }));
-    return result;
-});
-const addNewProductToCartIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, function* () {
-    const { products } = payload;
-    if (_id) {
-        const isUserExist = yield user_model_1.User.findById(_id);
-        if (!isUserExist) {
-            throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
-        }
-    }
-    if (products.length > 0) {
-        products.forEach((product) => __awaiter(void 0, void 0, void 0, function* () {
-            const isProductExist = yield product_model_1.Product.findById(product.productId);
-            if (!isProductExist) {
-                throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found');
-            }
-        }));
-    }
-    const result = yield order_model_1.Order.create(Object.assign(Object.assign({}, payload), { orderedBy: _id, cartAdded: true }));
+    // //check if the ordered product is exist in cart
+    // const cartItems = await Cart.find({ userId: _id })
+    // if (cartItems.length > 0) {
+    //   for (const cartItem of cartItems) {
+    //     for (const product of payload.products) {
+    //       if (
+    //         cartItem.products.some((item) => item.productId === product.productId)
+    //       ) {
+    //         await Cart.findByIdAndUpdate(cartItem._id, {
+    //           $pull: { products: { productId: product.productId } },
+    //         })
+    //       }
+    //     }
+    //   }
+    // }
     return result;
 });
 const getAllOrdersFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
@@ -116,34 +112,6 @@ const getAllOrdersOfAnUserFromDB = (id, user) => __awaiter(void 0, void 0, void 
         totalPrice,
     };
 });
-const getAllCartItemsOfAnUserFromDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.Order.find({ orderedBy: id, cartAdded: true }).populate({
-        path: 'products.productId',
-        select: 'title price image description category sellerName size color companyName',
-    });
-    if (user.role === 'user') {
-        result.forEach((order) => {
-            var _a;
-            const isOrderBelongsToUser = ((_a = order === null || order === void 0 ? void 0 : order.orderedBy) === null || _a === void 0 ? void 0 : _a.toString()) === user._id;
-            if (!isOrderBelongsToUser) {
-                throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Unauthorized');
-            }
-        });
-    }
-    let totalPrice = 0;
-    for (const order of result) {
-        for (const product of (order === null || order === void 0 ? void 0 : order.products) || []) {
-            const productDetails = yield product_model_1.Product.findById(product.productId);
-            if (productDetails) {
-                totalPrice += ((product === null || product === void 0 ? void 0 : product.quantity) || 0) * ((productDetails === null || productDetails === void 0 ? void 0 : productDetails.price) || 0);
-            }
-        }
-    }
-    return {
-        orders: result,
-        totalPrice: totalPrice,
-    };
-});
 const cartItemToOrderIntoDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     const result = yield order_model_1.Order.findByIdAndUpdate(id, { cartAdded: false });
@@ -200,8 +168,6 @@ exports.orderService = {
     getAllOrdersFromDB,
     getSingleOrderFromDB,
     getAllOrdersOfAnUserFromDB,
-    addNewProductToCartIntoDB,
-    getAllCartItemsOfAnUserFromDB,
     cartItemToOrderIntoDB,
     getOrderByMonthFromDB,
 };

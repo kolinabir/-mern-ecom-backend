@@ -55,26 +55,6 @@ const getAllOrdersOfAnUser = (0, catchAsync_1.default)((req, res) => __awaiter(v
         data: result,
     });
 }));
-const getAllCartItems = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_service_1.orderService.getAllCartItemsOfAnUserFromDB(req.params.id, req.user);
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: 'All Cart Items fetched successfully',
-        data: result,
-    });
-}));
-const addNewProductToCart = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
-    const id = ((_b = req.user) === null || _b === void 0 ? void 0 : _b._id) || null;
-    const result = yield order_service_1.orderService.addNewProductToCartIntoDB(req.body, id);
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: 'Product added to cart successfully',
-        data: result,
-    });
-}));
 const cartItemToOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_service_1.orderService.cartItemToOrderIntoDB(req.params.id, req.user);
     (0, sendResponse_1.default)(res, {
@@ -86,7 +66,6 @@ const cartItemToOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
 }));
 const getOrderByMonth = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_service_1.orderService.getOrderByMonthFromDB(req.user, req.query);
-    console.log(result);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -99,8 +78,6 @@ exports.orderController = {
     getAllOrders,
     getSingleOrder,
     getAllOrdersOfAnUser,
-    addNewProductToCart,
-    getAllCartItems,
     cartItemToOrder,
     getOrderByMonth,
 };
