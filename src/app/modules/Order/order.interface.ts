@@ -12,7 +12,6 @@ export type TOrder = {
   thana: string
   address: string
   phoneNumber: string
-  totalPrice: number
   email?: string
   additionalInfo?: string
   status?: 'pending' | 'cancelled' | 'delivered' | 'processing'

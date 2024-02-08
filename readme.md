@@ -361,6 +361,7 @@ _GET_
 
 `http://localhost:5000/api/product/:ID`
 `https://mern-ecom-backend-henna.vercel.app/api/product`
+
 #### GET All PRODUCT By CateogryID
 
 _GET_
@@ -662,7 +663,7 @@ _POST_
 
 _POST_
 
-`http://localhost:5000/api/order/addProductToCart`
+`http://localhost:5000/api/cart/addProductToCart`
 
 **Only Registered User Can Add Product to Cart**
 
@@ -676,18 +677,10 @@ _POST_
 {
   "products": [
     {
-      "productId": "659c13e11b156fbacbb9b050",
+      "productId": "659c5a3ed6c071d4fdd457fe",
       "quantity": 2
     }
-  ],
-  "customerName": "John Doe",
-  "district": "Sample District",
-  "thana": "Sample Thana",
-  "address": "123 Main Street",
-  "phoneNumber": 1234567890,
-  "email": "john.doe@example.com",
-  "additionalInfo": "Please handle with care",
-  "status": "pending"
+  ]
 }
 ```
 
@@ -702,27 +695,21 @@ _POST_
       {
         "productId": "659c5a3ed6c071d4fdd457fe",
         "quantity": 2,
-        "_id": "65a22bf28464fd4a1f017579"
+        "_id": "65c5181569e5d4add0bb7b32"
       }
     ],
-    "customerName": "John Doe",
-    "district": "Sample District",
-    "thana": "Sample Thana",
-    "address": "123 Main Street",
-    "phoneNumber": "1234567890",
-    "email": "john.doe@example.com",
-    "additionalInfo": "Please handle with care",
-    "status": "pending",
-    "orderedBy": "659c261690fa55c73a62d78d",
-    "cartAdded": true,
-    "_id": "65a22bf28464fd4a1f017578",
-    "orderedDate": "2024-01-13T06:21:38.230Z",
+    "cartAddedBy": "659c261690fa55c73a62d78d",
+    "_id": "65c5181569e5d4add0bb7b31",
+    "cartAddedDate": "2024-02-08T18:06:13.361Z",
     "__v": 0
   }
 }
 ```
 
-#### Order product from Cart
+/.//// don't use this route
+/// similar order the products from cart using 
+
+<!-- #### Order product from Cart
 
 _PATCH_
 
@@ -731,13 +718,13 @@ _PATCH_
 **Registered User who added the product to the Cart, only he can Order the product**
 
 - Just pass the jwt with the json data , rest will be managed by backend
--
+- -->
 
 #### Get All Cart Products of An User
 
 _GET_
 
-`http://localhost:5000/api/order/user/cart/:userID`
+`http://localhost:5000/api/cart/:userID`
 
 **Only Registered User or The Admin Can view items which are added to Cart**
 
@@ -748,79 +735,61 @@ _GET_
 
 ```json
 {
-  "success": true,
-  "message": "All Cart Items fetched successfully",
-  "data": {
-    "orders": [
-      {
-        "_id": "65a22bf28464fd4a1f017578",
-        "products": [
-          {
-            "productId": {
-              "_id": "659c5a3ed6c071d4fdd457fe",
-              "title": "Jeans - Shorts",
-              "price": 1,
-              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
-              "description": "This is updated description here",
-              "category": "659960c1ae471dbdae02e5c8",
-              "companyName": "The Brother Company",
-              "color": "Blind ddd",
-              "averageRating": {},
-              "id": "659c5a3ed6c071d4fdd457fe"
+    "success": true,
+    "message": "All Cart Items fetched successfully",
+    "data": {
+        "orders": [
+            {
+                "_id": "65c517c53e9a657137bdeb04",
+                "products": [
+                    {
+                        "productId": {
+                            "_id": "659c5a3ed6c071d4fdd457fe",
+                            "title": "Jeans - Shorts",
+                            "price": 1,
+                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+                            "description": "This is updated description here",
+                            "category": "659960c1ae471dbdae02e5c8",
+                            "companyName": "The Brother Company",
+                            "color": "Blind ddd",
+                            "averageRating": {},
+                            "id": "659c5a3ed6c071d4fdd457fe"
+                        },
+                        "quantity": 2,
+                        "_id": "65c517c53e9a657137bdeb05"
+                    }
+                ],
+                "cartAddedBy": "659c261690fa55c73a62d78d",
+                "cartAddedDate": "2024-02-08T18:04:53.398Z",
+                "__v": 0
             },
-            "quantity": 2,
-            "_id": "65a22bf28464fd4a1f017579"
-          }
+            {
+                "_id": "65c5181569e5d4add0bb7b31",
+                "products": [
+                    {
+                        "productId": {
+                            "_id": "659c5a3ed6c071d4fdd457fe",
+                            "title": "Jeans - Shorts",
+                            "price": 1,
+                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+                            "description": "This is updated description here",
+                            "category": "659960c1ae471dbdae02e5c8",
+                            "companyName": "The Brother Company",
+                            "color": "Blind ddd",
+                            "averageRating": {},
+                            "id": "659c5a3ed6c071d4fdd457fe"
+                        },
+                        "quantity": 2,
+                        "_id": "65c5181569e5d4add0bb7b32"
+                    }
+                ],
+                "cartAddedBy": "659c261690fa55c73a62d78d",
+                "cartAddedDate": "2024-02-08T18:06:13.361Z",
+                "__v": 0
+            }
         ],
-        "customerName": "John Doe",
-        "district": "Sample District",
-        "thana": "Sample Thana",
-        "address": "123 Main Street",
-        "phoneNumber": "1234567890",
-        "email": "john.doe@example.com",
-        "additionalInfo": "Please handle with care",
-        "status": "pending",
-        "orderedBy": "659c261690fa55c73a62d78d",
-        "cartAdded": true,
-        "orderedDate": "2024-01-13T06:21:38.230Z",
-        "__v": 0
-      },
-      {
-        "_id": "65a22e524b59d0b6aa35a1f5",
-        "products": [
-          {
-            "productId": {
-              "_id": "659c5a3ed6c071d4fdd457fe",
-              "title": "Jeans - Shorts",
-              "price": 1,
-              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
-              "description": "This is updated description here",
-              "category": "659960c1ae471dbdae02e5c8",
-              "companyName": "The Brother Company",
-              "color": "Blind ddd",
-              "averageRating": {},
-              "id": "659c5a3ed6c071d4fdd457fe"
-            },
-            "quantity": 2,
-            "_id": "65a22e524b59d0b6aa35a1f6"
-          }
-        ],
-        "customerName": "John Doe",
-        "district": "Sample District",
-        "thana": "Sample Thana",
-        "address": "123 Main Street",
-        "phoneNumber": "1234567890",
-        "email": "john.doe@example.com",
-        "additionalInfo": "Please handle with care",
-        "status": "pending",
-        "orderedBy": "659c261690fa55c73a62d78d",
-        "cartAdded": true,
-        "orderedDate": "2024-01-13T06:31:47.000Z",
-        "__v": 0
-      }
-    ],
-    "totalPrice": 4
-  }
+        "totalPrice": 4
+    }
 }
 ```
 
@@ -973,45 +942,44 @@ _Don't forget to pass jwt_
 _It'll show all the orders of that month and year_
 _Also the combined total price of those products_
 
-
 ##### DEMO Returned Data
 
 ```json
 {
-    "success": true,
-    "message": "All orders fetched successfully",
-    "data": {
-        "orders": [
-            {
-                "_id": "659d404492133c6c4639ff6e",
-                "products": [
-                    {
-                        "productId": {
-                            "_id": "659c5a3ed6c071d4fdd457fe",
-                            "title": "Jeans - Shorts",
-                            "price": 1,
-                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
-                            "averageRating": {},
-                            "id": "659c5a3ed6c071d4fdd457fe"
-                        },
-                        "quantity": 4444,
-                        "_id": "659d404492133c6c4639ff6f"
-                    }
-                ],
-                "customerName": "Admin not",
-                "district": "Khulna",
-                "thana": "Bogura",
-                "address": "0x7890706f001a2dc26ec1495f517edd18e339206b",
-                "phoneNumber": "1763902654",
-                "email": "user@user.com",
-                "additionalInfo": "dd",
-                "status": "delivered",
-                "orderedBy": "6598572c764d4dba9cafaca7",
-                "orderedDate": "2024-01-09T12:47:00.111Z",
-                "__v": 0
-            }
+  "success": true,
+  "message": "All orders fetched successfully",
+  "data": {
+    "orders": [
+      {
+        "_id": "659d404492133c6c4639ff6e",
+        "products": [
+          {
+            "productId": {
+              "_id": "659c5a3ed6c071d4fdd457fe",
+              "title": "Jeans - Shorts",
+              "price": 1,
+              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+              "averageRating": {},
+              "id": "659c5a3ed6c071d4fdd457fe"
+            },
+            "quantity": 4444,
+            "_id": "659d404492133c6c4639ff6f"
+          }
         ],
-        "totalOrderPrice": 4444
-    }
+        "customerName": "Admin not",
+        "district": "Khulna",
+        "thana": "Bogura",
+        "address": "0x7890706f001a2dc26ec1495f517edd18e339206b",
+        "phoneNumber": "1763902654",
+        "email": "user@user.com",
+        "additionalInfo": "dd",
+        "status": "delivered",
+        "orderedBy": "6598572c764d4dba9cafaca7",
+        "orderedDate": "2024-01-09T12:47:00.111Z",
+        "__v": 0
+      }
+    ],
+    "totalOrderPrice": 4444
+  }
 }
 ```

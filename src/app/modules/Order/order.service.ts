@@ -6,6 +6,7 @@ import { Order } from './order.model'
 import { Product } from '../Product/product.model'
 import QueryBuilder from '../../builder/queryBuilder'
 import { JwtPayload } from 'jsonwebtoken'
+import { Cart } from '../Cart/cart.model'
 
 const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
   const { products } = payload
@@ -29,34 +30,21 @@ const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
     orderedBy: _id,
     cartAdded: false,
   })
-  return result
-}
-
-const addNewProductToCartIntoDB = async (
-  payload: TOrder,
-  _id: string | null,
-) => {
-  const { products } = payload
-  if (_id) {
-    const isUserExist = await User.findById(_id)
-    if (!isUserExist) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User not found')
-    }
-  }
-  if (products.length > 0) {
-    products.forEach(async (product) => {
-      const isProductExist = await Product.findById(product.productId)
-      if (!isProductExist) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Product not found')
-      }
-    })
-  }
-
-  const result = await Order.create({
-    ...payload,
-    orderedBy: _id,
-    cartAdded: true,
-  })
+  // //check if the ordered product is exist in cart
+  // const cartItems = await Cart.find({ userId: _id })
+  // if (cartItems.length > 0) {
+  //   for (const cartItem of cartItems) {
+  //     for (const product of payload.products) {
+  //       if (
+  //         cartItem.products.some((item) => item.productId === product.productId)
+  //       ) {
+  //         await Cart.findByIdAndUpdate(cartItem._id, {
+  //           $pull: { products: { productId: product.productId } },
+  //         })
+  //       }
+  //     }
+  //   }
+  // }
   return result
 }
 
@@ -121,35 +109,6 @@ const getAllOrdersOfAnUserFromDB = async (id: string, user: JwtPayload) => {
   return {
     orders: result,
     totalPrice,
-  }
-}
-const getAllCartItemsOfAnUserFromDB = async (id: string, user: JwtPayload) => {
-  const result = await Order.find({ orderedBy: id, cartAdded: true }).populate({
-    path: 'products.productId',
-    select:
-      'title price image description category sellerName size color companyName',
-  })
-  if (user.role === 'user') {
-    result.forEach((order) => {
-      const isOrderBelongsToUser = order?.orderedBy?.toString() === user._id
-      if (!isOrderBelongsToUser) {
-        throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized')
-      }
-    })
-  }
-  let totalPrice: number = 0
-  for (const order of result) {
-    for (const product of order?.products || []) {
-      const productDetails = await Product.findById(product.productId)
-      if (productDetails) {
-        totalPrice += (product?.quantity || 0) * (productDetails?.price || 0)
-      }
-    }
-  }
-
-  return {
-    orders: result,
-    totalPrice: totalPrice,
   }
 }
 
@@ -226,8 +185,6 @@ export const orderService = {
   getAllOrdersFromDB,
   getSingleOrderFromDB,
   getAllOrdersOfAnUserFromDB,
-  addNewProductToCartIntoDB,
-  getAllCartItemsOfAnUserFromDB,
   cartItemToOrderIntoDB,
   getOrderByMonthFromDB,
 }
