@@ -45,12 +45,23 @@ const addNewProductToCartIntoDB = async (
           })
         } else {
           // If the product is not in the cart, add it
+
           await Cart.findByIdAndUpdate(cartItem._id, {
-            $push: { products: product },
+            $push: {
+              products: product,
+            },
           })
         }
       }
     }
+  }
+  // If the cart is empty, create a new cart and add the products
+  else {
+    const result = await Cart.create({
+      cartAddedBy: _id,
+      products: payload.products,
+    })
+    return result
   }
   return cartItems
 }
