@@ -706,8 +706,8 @@ _POST_
 }
 ```
 
-/.//// don't use this route
-/// similar order the products from cart using 
+<!-- /.//// don't use this route
+/// similar order the products from cart using  -->
 
 <!-- #### Order product from Cart
 
@@ -735,61 +735,121 @@ _GET_
 
 ```json
 {
-    "success": true,
-    "message": "All Cart Items fetched successfully",
-    "data": {
-        "orders": [
-            {
-                "_id": "65c517c53e9a657137bdeb04",
-                "products": [
-                    {
-                        "productId": {
-                            "_id": "659c5a3ed6c071d4fdd457fe",
-                            "title": "Jeans - Shorts",
-                            "price": 1,
-                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
-                            "description": "This is updated description here",
-                            "category": "659960c1ae471dbdae02e5c8",
-                            "companyName": "The Brother Company",
-                            "color": "Blind ddd",
-                            "averageRating": {},
-                            "id": "659c5a3ed6c071d4fdd457fe"
-                        },
-                        "quantity": 2,
-                        "_id": "65c517c53e9a657137bdeb05"
-                    }
-                ],
-                "cartAddedBy": "659c261690fa55c73a62d78d",
-                "cartAddedDate": "2024-02-08T18:04:53.398Z",
-                "__v": 0
+  "success": true,
+  "message": "All Cart Items fetched successfully",
+  "data": {
+    "orders": [
+      {
+        "_id": "65c517c53e9a657137bdeb04",
+        "products": [
+          {
+            "productId": {
+              "_id": "659c5a3ed6c071d4fdd457fe",
+              "title": "Jeans - Shorts",
+              "price": 1,
+              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+              "description": "This is updated description here",
+              "category": "659960c1ae471dbdae02e5c8",
+              "companyName": "The Brother Company",
+              "color": "Blind ddd",
+              "averageRating": {},
+              "id": "659c5a3ed6c071d4fdd457fe"
             },
-            {
-                "_id": "65c5181569e5d4add0bb7b31",
-                "products": [
-                    {
-                        "productId": {
-                            "_id": "659c5a3ed6c071d4fdd457fe",
-                            "title": "Jeans - Shorts",
-                            "price": 1,
-                            "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
-                            "description": "This is updated description here",
-                            "category": "659960c1ae471dbdae02e5c8",
-                            "companyName": "The Brother Company",
-                            "color": "Blind ddd",
-                            "averageRating": {},
-                            "id": "659c5a3ed6c071d4fdd457fe"
-                        },
-                        "quantity": 2,
-                        "_id": "65c5181569e5d4add0bb7b32"
-                    }
-                ],
-                "cartAddedBy": "659c261690fa55c73a62d78d",
-                "cartAddedDate": "2024-02-08T18:06:13.361Z",
-                "__v": 0
-            }
+            "quantity": 2,
+            "_id": "65c517c53e9a657137bdeb05"
+          }
         ],
-        "totalPrice": 4
-    }
+        "cartAddedBy": "659c261690fa55c73a62d78d",
+        "cartAddedDate": "2024-02-08T18:04:53.398Z",
+        "__v": 0
+      },
+      {
+        "_id": "65c5181569e5d4add0bb7b31",
+        "products": [
+          {
+            "productId": {
+              "_id": "659c5a3ed6c071d4fdd457fe",
+              "title": "Jeans - Shorts",
+              "price": 1,
+              "image": "https://i.ibb.co/W6sFq5h/Rectangle-20.png",
+              "description": "This is updated description here",
+              "category": "659960c1ae471dbdae02e5c8",
+              "companyName": "The Brother Company",
+              "color": "Blind ddd",
+              "averageRating": {},
+              "id": "659c5a3ed6c071d4fdd457fe"
+            },
+            "quantity": 2,
+            "_id": "65c5181569e5d4add0bb7b32"
+          }
+        ],
+        "cartAddedBy": "659c261690fa55c73a62d78d",
+        "cartAddedDate": "2024-02-08T18:06:13.361Z",
+        "__v": 0
+      }
+    ],
+    "totalPrice": 4
+  }
+}
+```
+
+#### Delete product from Cart by one quantity(-1)
+
+_DELETE_
+
+`http://localhost:5000/api/cart/:productID`
+
+**Only Registered User Can Delete From DB**
+
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+
+##### DEMO Returned Data
+
+```json
+{
+  "success": true,
+  "message": "Product deleted from cart successfully",
+  "data": {
+    "_id": "65c92764015a8dd471809462",
+    "products": [
+      {
+        "productId": "65a907a03224e9ca7f7326be",
+        "quantity": 4, // quantity will be decreased by 1
+        "_id": "65c92764015a8dd471809463"
+      }
+    ],
+    "cartAddedBy": "6598572c764d4dba9cafaca7",
+    "cartAddedDate": "2024-02-11T20:00:36.478Z",
+    "__v": 0
+  }
+}
+```
+
+#### Delete whole product from Cart
+
+_DELETE_
+
+`http://localhost:5000/api/cart/delete/:productID`
+
+**Only Registered User Can Delete From DB**
+
+- Just pass the jwt with the json data , rest will be managed by backend
+-
+
+##### DEMO Returned Data
+
+```json
+{
+  "success": true,
+  "message": "Product deleted from cart successfully",
+  "data": {
+    "_id": "65c92764015a8dd471809462",
+    "products": [],
+    "cartAddedBy": "6598572c764d4dba9cafaca7",
+    "cartAddedDate": "2024-02-11T20:00:36.478Z",
+    "__v": 3
+  }
 }
 ```
 

@@ -51,11 +51,21 @@ const addNewProductToCartIntoDB = (payload, _id) => __awaiter(void 0, void 0, vo
                 else {
                     // If the product is not in the cart, add it
                     yield cart_model_1.Cart.findByIdAndUpdate(cartItem._id, {
-                        $push: { products: product },
+                        $push: {
+                            products: product,
+                        },
                     });
                 }
             }
         }
+    }
+    // If the cart is empty, create a new cart and add the products
+    else {
+        const result = yield cart_model_1.Cart.create({
+            cartAddedBy: _id,
+            products: payload.products,
+        });
+        return result;
     }
     return cartItems;
 });

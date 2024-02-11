@@ -26,9 +26,35 @@ const addNewProductToCart = catchAsync(async (req, res) => {
   })
 })
 
+const deleteProductFromCartByQuantity = catchAsync(async (req, res) => {
+  const result = await cartService.deleteProductQuantityFromCartInDB(
+    req.params.id,
+    req.user?._id,
+  )
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product deleted from cart successfully',
+    data: result,
+  })
+})
 
+const deleteProductFromCart = catchAsync(async (req, res) => {
+  const result = await cartService.deleteProductFromCartFromDB(
+    req.params.id,
+    req.user?._id,
+  )
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product deleted from cart successfully',
+    data: result,
+  })
+})
 
 export const cartController = {
   addNewProductToCart,
   getAllCartItems,
+  deleteProductFromCartByQuantity,
+  deleteProductFromCart,
 }

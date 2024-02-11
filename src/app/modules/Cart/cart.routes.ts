@@ -20,4 +20,16 @@ router.get(
   cartController.getAllCartItems,
 )
 
+router.delete(
+  '/:id',
+  auth(USER_ROLE.user),
+  cartController.deleteProductFromCartByQuantity,
+)
+
+router.delete(
+  '/delete/:id',
+  auth(USER_ROLE.user),
+  cartController.deleteProductFromCart,
+)
+
 export const cartRoutes = router
