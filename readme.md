@@ -605,6 +605,7 @@ _POST_
 **Registered User and Non Register user Can Order**
 
 > If jwt is available, Just pass the jwt with the json data , rest will be managed by backend. otherwise dont pass jwt.
+> If user is registered when ordering, the product will be removed from the cart automatically if it was added to the cart.
 
 `http://localhost:5000/api/order`
 

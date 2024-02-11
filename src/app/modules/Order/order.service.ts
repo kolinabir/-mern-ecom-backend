@@ -10,42 +10,43 @@ import { Cart } from '../Cart/cart.model'
 
 const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
   const { products } = payload
+
   if (_id) {
     const isUserExist = await User.findById(_id)
     if (!isUserExist) {
       throw new AppError(httpStatus.NOT_FOUND, 'User not found')
     }
   }
+
   if (products.length > 0) {
-    products.forEach(async (product) => {
+    for (const product of products) {
       const isProductExist = await Product.findById(product.productId)
       if (!isProductExist) {
         throw new AppError(httpStatus.NOT_FOUND, 'Product not found')
       }
-    })
-  }
+    }
 
-  const result = await Order.create({
-    ...payload,
-    orderedBy: _id,
-    cartAdded: false,
-  })
-  // //check if the ordered product is exist in cart
-  // const cartItems = await Cart.find({ userId: _id })
-  // if (cartItems.length > 0) {
-  //   for (const cartItem of cartItems) {
-  //     for (const product of payload.products) {
-  //       if (
-  //         cartItem.products.some((item) => item.productId === product.productId)
-  //       ) {
-  //         await Cart.findByIdAndUpdate(cartItem._id, {
-  //           $pull: { products: { productId: product.productId } },
-  //         })
-  //       }
-  //     }
-  //   }
-  // }
-  return result
+    const result = await Order.create({
+      ...payload,
+      orderedBy: _id,
+      cartAdded: false,
+    })
+
+    // Check if the ordered products are in the user's cart and remove them
+    const cartItems = await Cart.findOne({ cartAddedBy: _id })
+    if (cartItems) {
+      const updatedProducts = cartItems.products.filter((cartProduct) => {
+        return !products.some((orderedProduct) =>
+          cartProduct.productId.equals(orderedProduct.productId),
+        )
+      })
+
+      // Update the user's cart with the remaining products
+      await Cart.findByIdAndUpdate(cartItems._id, { products: updatedProducts })
+    }
+
+    return result
+  }
 }
 
 const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
