@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose'
 import { TProduct } from './product.interface'
 import { Review } from '../Review/review.model'
 import { TReview } from '../Review/review.interface'
-import { number } from 'zod'
 
 const productSchema = new Schema<TProduct>(
   {
@@ -16,7 +15,7 @@ const productSchema = new Schema<TProduct>(
       required: true,
     },
     image: {
-      type: String,
+      type: [String],
       required: true,
     },
     description: {
@@ -38,7 +37,6 @@ const productSchema = new Schema<TProduct>(
     policy: {
       type: String,
     },
-    size: String,
     color: String,
     addedBy: {
       type: Schema.Types.ObjectId,
@@ -82,6 +80,5 @@ productSchema.virtual('averageRating').get(async function () {
   const totalRating = result.reduce((sum, review) => sum + review.rating, 0)
   return totalRating / result.length
 })
-
 
 export const Product = model<TProduct>('Product', productSchema)

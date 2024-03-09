@@ -3,13 +3,12 @@ import { Types } from 'mongoose'
 export type TProduct = {
   title: string
   price: number
-  image: string
+  image: [string]
   description: string
   category: Types.ObjectId
   companyName: string
   sellerName?: string
   policy?: string
-  size?: string
   color?: string
   addedBy?: Types.ObjectId
   sizes?: string[]
