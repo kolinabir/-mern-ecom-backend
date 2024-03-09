@@ -69,6 +69,16 @@ const getProductsByCategory = catchAsync(async (req, res) => {
   })
 })
 
+const getQuantityOfZero = catchAsync(async (req, res) => {
+  const result = await ProductServices.getQuantityOfZero()
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All products with quantity 0 retrieved successfully',
+    data: result,
+  })
+})
+
 export const ProductControllers = {
   createNewProduct,
   getAllProducts,
@@ -76,4 +86,5 @@ export const ProductControllers = {
   updateProduct,
   deleteProduct,
   getProductsByCategory,
+  getQuantityOfZero,
 }

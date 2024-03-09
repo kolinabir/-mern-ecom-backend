@@ -266,13 +266,12 @@ _POST_
 {
   "title": "Sample Product",
   "price": 29.99,
-  "image": "https://example.com/sample-image.jpg",
+  "image":  ["https://example.com/sample-image.jpg", "https://example.com/sample-image.jpg1", "https://example.com/sample-image.jpg2"]
   "description": "This is a sample product description.",
   "category": "659959683b42c956b54c2d1c",
   "companyName": "Sample Company",
   "sellerName": "John Doe",
   "policy": "Sample return policy",
-  "size": "Medium",
   "color": "Blue",
   "sizes": ["Small", "Medium", "Large"],
   "quantity": 10
@@ -288,13 +287,16 @@ _POST_
   "data": {
     "title": "Sample Product",
     "price": 29.99,
-    "image": "https://example.com/sample-image.jpg",
+    "image": [
+      "https://example.com/sample-image.jpg",
+      "https://example.com/sample-image.jpg1",
+      "https://example.com/sample-image.jpg2"
+    ],
     "description": "This is a sample product description.",
     "category": "659959683b42c956b54c2d1c",
     "companyName": "Sample Company",
     "sellerName": "John Doe",
     "policy": "Sample return policy",
-    "size": "Medium",
     "color": "Blue",
     "addedBy": "659958593b42c956b54c2d12",
     "sizes": ["Small", "Medium", "Large"],
@@ -322,36 +324,41 @@ _GET_
 {
   "success": true,
   "message": "All products retrieved successfully",
-  "data": [
-    {
-      "_id": "65995dabae471dbdae02e5a2",
-      "title": "Sample Pasddaroductd14e21",
-      "price": 29.99,
-      "image": "https://example.com/sample-image.jpg",
-      "description": "This is a sample product description.",
-      "category": {
-        "_id": "659959683b42c956b54c2d1c",
-        "name": "TShirt324"
-      },
-      "companyName": "Sample Company",
-      "sellerName": "John Doe",
-      "policy": "Sample return policy",
-      "size": "Medium",
-      "color": "Blue",
-      "addedBy": {
-        "_id": "659958593b42c956b54c2d12",
-        "username": "admin"
-      },
-      "sizes": ["Small", "Medium", "Large"],
-      "quantity": 10,
-      "createdAt": "2024-01-06T14:03:23.708Z",
-      "updatedAt": "2024-01-06T14:03:23.708Z",
-      "__v": 0,
-      "reviews": [],
-      "averageRating": 0,
-      "id": "65995dabae471dbdae02e5a2"
-    }
-  ]
+  "data": {
+    "products": [
+      {
+        "_id": "65ca4f27149f959719425a26",
+        "title": "PRime",
+        "price": 29.99,
+        "image": [
+          "https://i.ebayimg.com/images/g/CtIAAOSwXoBkZLUo/s-l1600.jpg"
+        ],
+        "description": "This is a sample product description.",
+        "category": {
+          "_id": "659959683b42c956b54c2d1c",
+          "name": "BAGS"
+        },
+        "companyName": "Sample Company",
+        "sellerName": "John Doe",
+        "policy": "Sample return policy",
+        "size": "Medium",
+        "color": "Blue",
+        "addedBy": {
+          "_id": "659958593b42c956b54c2d12",
+          "username": "admin"
+        },
+        "sizes": ["Small", "Medium", "Large"],
+        "quantity": 10,
+        "createdAt": "2024-02-12T17:02:31.582Z",
+        "updatedAt": "2024-02-12T17:02:31.582Z",
+        "__v": 0,
+        "reviews": [],
+        "averageRating": 0,
+        "id": "65ca4f27149f959719425a26"
+      }
+    ],
+    "availableProduct": 1
+  }
 }
 ```
 
@@ -379,7 +386,11 @@ _GET_
     "_id": "65995dabae471dbdae02e5a2",
     "title": "Sample Pasddaroductd14e21",
     "price": 29.99,
-    "image": "https://example.com/sample-image.jpg",
+    "image": [
+      "https://example.com/sample-image.jpg",
+      "https://example.com/sample-image.jpg1",
+      "https://example.com/sample-image.jpg2"
+    ],
     "description": "This is a sample product description.",
     "category": {
       "_id": "659959683b42c956b54c2d1c",
@@ -433,7 +444,6 @@ _PATCH_
   "companyName": "Sample Company1",
   "sellerName": "John Doe1",
   "policy": "Sample return policy1",
-  "size": "Medium1",
   "color": "Blue1",
   "sizes": ["Small1", "Medium1", "Larg1e"],
   "quantity": 101
@@ -456,7 +466,7 @@ _PATCH_
     "companyName": "Sample Company1",
     "sellerName": "John Doe1",
     "policy": "Sample return policy1",
-    "size": "Medium1",
+
     "color": "Blue1",
     "addedBy": "659958593b42c956b54c2d12",
     "sizes": ["Small1", "Medium1", "Larg1e"],
@@ -498,7 +508,7 @@ _DELETE_
     "companyName": "Sample Company1",
     "sellerName": "John Doe1",
     "policy": "Sample return policy1",
-    "size": "Medium1",
+
     "color": "Blue1",
     "addedBy": "659958593b42c956b54c2d12",
     "sizes": ["Small1", "Medium1", "Larg1e"],
@@ -895,6 +905,54 @@ _DELETE_
       "orderedDate": "2024-01-08T15:25:31.347Z"
     }
   ]
+}
+```
+
+##### Get ALL products which are in quantity 0
+
+`http://localhost:5000/api/product/quantity/zero`
+`dont forget to pass jwt`
+
+###### DEMo returned Data
+
+```json
+{
+  "success": true,
+  "message": "All products with quantity 0 retrieved successfully",
+  "data": {
+    "products": [
+      {
+        "_id": "65ca4f27149f959719425a26",
+        "title": "PRime",
+        "price": 29.99,
+        "image": [
+          "https://i.ebayimg.com/images/g/CtIAAOSwXoBkZLUo/s-l1600.jpg"
+        ],
+        "description": "This is a sample product description.",
+        "category": {
+          "_id": "659959683b42c956b54c2d1c",
+          "name": "BAGS"
+        },
+        "companyName": "Sample Company",
+        "sellerName": "John Doe",
+        "policy": "Sample return policy",
+        "size": "Medium",
+        "color": "Blue",
+        "addedBy": {
+          "_id": "659958593b42c956b54c2d12",
+          "username": "admin"
+        },
+        "sizes": ["Small", "Medium", "Large"],
+        "quantity": 0,
+        "createdAt": "2024-02-12T17:02:31.582Z",
+        "updatedAt": "2024-02-12T17:02:31.582Z",
+        "__v": 0,
+        "averageRating": {},
+        "id": "65ca4f27149f959719425a26"
+      }
+    ],
+    "availableProduct": 1
+  }
 }
 ```
 

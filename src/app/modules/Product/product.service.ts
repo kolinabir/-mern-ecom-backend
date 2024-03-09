@@ -34,6 +34,10 @@ const getAllProductsFromDB = async () => {
       path: 'reviews',
       select: 'review rating createdAt createdBy',
     })
+    .where('quantity')
+    .gt(0)
+  ///check if quantity is more than 0
+
   const productsWithAverageRating = await Promise.all(
     result.map(async (product) => {
       const averageRating = await product
@@ -46,7 +50,10 @@ const getAllProductsFromDB = async () => {
     }),
   )
 
-  return productsWithAverageRating
+  return {
+    products: productsWithAverageRating,
+    availableProduct: result.length,
+  }
 }
 const getSingleProductFromDB = async (id: string) => {
   const result = await Product.findById(id)
@@ -87,6 +94,24 @@ const getProductByCategoryFromDB = async (id: string) => {
   return result
 }
 
+const getQuantityOfZero = async () => {
+  const result = await Product.find()
+    .where('quantity')
+    .equals(0)
+    .populate({
+      path: 'category',
+      select: 'name',
+    })
+    .populate({
+      path: 'addedBy',
+      select: 'username',
+    })
+  return {
+    products: result,
+    availableProduct: result.length,
+  }
+}
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
@@ -94,4 +119,5 @@ export const ProductServices = {
   updateProductFromDB,
   deleteProductFromDB,
   getProductByCategoryFromDB,
+  getQuantityOfZero,
 }

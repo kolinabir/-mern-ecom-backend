@@ -13,6 +13,12 @@ router.post(
   validateRequest(ProductValidations.createProductValidationSchema),
   ProductControllers.createNewProduct,
 )
+//get quantity of zero
+router.get(
+  '/quantity/zero',
+  auth(USER_ROLE.admin),
+  ProductControllers.getQuantityOfZero,
+)
 
 router.get('/category/:id', ProductControllers.getProductsByCategory)
 router.get('/', ProductControllers.getAllProducts)
