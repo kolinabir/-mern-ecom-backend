@@ -21,53 +21,57 @@ const cart_model_1 = require("./cart.model");
 const addNewProductToCartIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, function* () {
     const { products } = payload;
     if (_id) {
+        // Check if user exists
         const isUserExist = yield user_model_1.User.findById(_id);
         if (!isUserExist) {
             throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
         }
     }
     if (products.length > 0) {
-        products.forEach((product) => __awaiter(void 0, void 0, void 0, function* () {
+        for (const product of products) {
+            // Check if product exists
             const isProductExist = yield product_model_1.Product.findById(product.productId);
             if (!isProductExist) {
                 throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found');
             }
-        }));
-    }
-    //check if the ordered product is exist in cart and if exist then increase the quantity
-    const cartItems = yield cart_model_1.Cart.find({ cartAddedBy: _id });
-    if (cartItems.length > 0) {
-        for (const cartItem of cartItems) {
-            for (const product of payload.products) {
-                const existingProductIndex = cartItem.products.findIndex((item) => item.productId === product.productId);
+        }
+        const cart = yield cart_model_1.Cart.findOne({ cartAddedBy: _id });
+        if (cart) {
+            // If the cart exists, update or add products
+            for (const product of products) {
+                const existingProductIndex = cart.products.findIndex((item) => item.productId.toString() === product.productId.toString());
                 if (existingProductIndex !== -1) {
                     // If the product already exists in the cart, update its quantity
-                    yield cart_model_1.Cart.findByIdAndUpdate(cartItem._id, {
-                        $inc: {
-                            [`products.${existingProductIndex}.quantity`]: product.quantity,
-                        },
-                    });
+                    cart.products[existingProductIndex].quantity += product.quantity;
                 }
                 else {
                     // If the product is not in the cart, add it
-                    yield cart_model_1.Cart.findByIdAndUpdate(cartItem._id, {
-                        $push: {
-                            products: product,
-                        },
+                    cart.products.push({
+                        productId: product.productId,
+                        quantity: product.quantity,
                     });
                 }
             }
+            // Save the updated cart
+            yield cart.save();
+        }
+        else {
+            // If the cart doesn't exist, create a new cart with the provided products
+            const newCart = new cart_model_1.Cart({
+                cartAddedBy: _id,
+                products: products.map((product) => ({
+                    productId: product.productId,
+                    quantity: product.quantity,
+                })),
+            });
+            yield newCart.save();
         }
     }
-    // If the cart is empty, create a new cart and add the products
-    else {
-        const result = yield cart_model_1.Cart.create({
-            cartAddedBy: _id,
-            products: payload.products,
-        });
-        return result;
-    }
-    return cartItems;
+    const result = yield cart_model_1.Cart.findOne({ cartAddedBy: _id }).populate({
+        path: 'products.productId',
+        select: 'title price image description category sellerName size color companyName',
+    });
+    return result;
 });
 const getAllCartItemsOfAnUserFromDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield cart_model_1.Cart.find({ cartAddedBy: id }).populate({
@@ -97,7 +101,54 @@ const getAllCartItemsOfAnUserFromDB = (id, user) => __awaiter(void 0, void 0, vo
         totalPrice: totalPrice,
     };
 });
+const deleteProductQuantityFromCartInDB = (productId, _id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isCartExist = yield cart_model_1.Cart.findOne({ cartAddedBy: _id });
+    if (isCartExist) {
+        // Find the product index in the cart
+        const productIndex = isCartExist.products.findIndex((product) => product.productId.toString() === productId);
+        if (productIndex !== -1) {
+            // If the product exists in the cart, decrease its quantity by one
+            isCartExist.products[productIndex].quantity -= 1;
+            // If the quantity becomes zero, remove the product from the array
+            if (isCartExist.products[productIndex].quantity <= 0) {
+                isCartExist.products.splice(productIndex, 1);
+            }
+            // Save the updated cart
+            const result = yield isCartExist.save();
+            return result;
+        }
+        else {
+            throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found in the cart');
+        }
+    }
+    else {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Cart not found');
+    }
+});
+const deleteProductFromCartFromDB = (productId, _id) => __awaiter(void 0, void 0, void 0, function* () {
+    // this will delete the whole product from cart
+    const isCartExist = yield cart_model_1.Cart.findOne({ cartAddedBy: _id });
+    if (isCartExist) {
+        // Find the product index in the cart
+        const productIndex = isCartExist.products.findIndex((product) => product.productId.toString() === productId);
+        if (productIndex !== -1) {
+            // If the product exists in the cart, remove the product from the array
+            isCartExist.products.splice(productIndex, 1);
+            // Save the updated cart
+            const result = yield isCartExist.save();
+            return result;
+        }
+        else {
+            throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found in the cart');
+        }
+    }
+    else {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Cart not found');
+    }
+});
 exports.cartService = {
     addNewProductToCartIntoDB,
     getAllCartItemsOfAnUserFromDB,
+    deleteProductQuantityFromCartInDB,
+    deleteProductFromCartFromDB,
 };

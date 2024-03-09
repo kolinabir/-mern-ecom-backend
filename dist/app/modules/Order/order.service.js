@@ -19,6 +19,7 @@ const user_model_1 = require("../User/user.model");
 const order_model_1 = require("./order.model");
 const product_model_1 = require("../Product/product.model");
 const queryBuilder_1 = __importDefault(require("../../builder/queryBuilder"));
+const cart_model_1 = require("../Cart/cart.model");
 const addNewOrderIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, function* () {
     const { products } = payload;
     if (_id) {
@@ -28,30 +29,24 @@ const addNewOrderIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, fu
         }
     }
     if (products.length > 0) {
-        products.forEach((product) => __awaiter(void 0, void 0, void 0, function* () {
+        for (const product of products) {
             const isProductExist = yield product_model_1.Product.findById(product.productId);
             if (!isProductExist) {
                 throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found');
             }
-        }));
+        }
+        const result = yield order_model_1.Order.create(Object.assign(Object.assign({}, payload), { orderedBy: _id, cartAdded: false }));
+        // Check if the ordered products are in the user's cart and remove them
+        const cartItems = yield cart_model_1.Cart.findOne({ cartAddedBy: _id });
+        if (cartItems) {
+            const updatedProducts = cartItems.products.filter((cartProduct) => {
+                return !products.some((orderedProduct) => cartProduct.productId.equals(orderedProduct.productId));
+            });
+            // Update the user's cart with the remaining products
+            yield cart_model_1.Cart.findByIdAndUpdate(cartItems._id, { products: updatedProducts });
+        }
+        return result;
     }
-    const result = yield order_model_1.Order.create(Object.assign(Object.assign({}, payload), { orderedBy: _id, cartAdded: false }));
-    // //check if the ordered product is exist in cart
-    // const cartItems = await Cart.find({ userId: _id })
-    // if (cartItems.length > 0) {
-    //   for (const cartItem of cartItems) {
-    //     for (const product of payload.products) {
-    //       if (
-    //         cartItem.products.some((item) => item.productId === product.productId)
-    //       ) {
-    //         await Cart.findByIdAndUpdate(cartItem._id, {
-    //           $pull: { products: { productId: product.productId } },
-    //         })
-    //       }
-    //     }
-    //   }
-    // }
-    return result;
 });
 const getAllOrdersFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const searchableFields = [

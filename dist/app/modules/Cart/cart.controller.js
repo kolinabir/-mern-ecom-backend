@@ -37,7 +37,29 @@ const addNewProductToCart = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result,
     });
 }));
+const deleteProductFromCartByQuantity = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const result = yield cart_service_1.cartService.deleteProductQuantityFromCartInDB(req.params.id, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Product deleted from cart successfully',
+        data: result,
+    });
+}));
+const deleteProductFromCart = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    const result = yield cart_service_1.cartService.deleteProductFromCartFromDB(req.params.id, (_c = req.user) === null || _c === void 0 ? void 0 : _c._id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Product deleted from cart successfully',
+        data: result,
+    });
+}));
 exports.cartController = {
     addNewProductToCart,
     getAllCartItems,
+    deleteProductFromCartByQuantity,
+    deleteProductFromCart,
 };

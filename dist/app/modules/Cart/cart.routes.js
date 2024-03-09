@@ -13,4 +13,6 @@ const cart_validation_1 = require("./cart.validation");
 const router = (0, express_1.Router)();
 router.post('/addProductToCart', (0, auth_1.default)(user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(cart_validation_1.cartValidateSchema.addCartValidationSchema), cart_controller_1.cartController.addNewProductToCart);
 router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), cart_controller_1.cartController.getAllCartItems);
+router.delete('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.user), cart_controller_1.cartController.deleteProductFromCartByQuantity);
+router.delete('/delete/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.user), cart_controller_1.cartController.deleteProductFromCart);
 exports.cartRoutes = router;
