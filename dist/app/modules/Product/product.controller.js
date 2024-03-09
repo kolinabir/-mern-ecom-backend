@@ -71,6 +71,15 @@ const getProductsByCategory = (0, catchAsync_1.default)((req, res) => __awaiter(
         data: result,
     });
 }));
+const getQuantityOfZero = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_service_1.ProductServices.getQuantityOfZero();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'All products with quantity 0 retrieved successfully',
+        data: result,
+    });
+}));
 exports.ProductControllers = {
     createNewProduct,
     getAllProducts,
@@ -78,4 +87,5 @@ exports.ProductControllers = {
     updateProduct,
     deleteProduct,
     getProductsByCategory,
+    getQuantityOfZero,
 };

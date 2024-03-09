@@ -23,7 +23,7 @@ const productSchema = new mongoose_1.Schema({
         required: true,
     },
     image: {
-        type: String,
+        type: [String],
         required: true,
     },
     description: {
@@ -45,7 +45,6 @@ const productSchema = new mongoose_1.Schema({
     policy: {
         type: String,
     },
-    size: String,
     color: String,
     addedBy: {
         type: mongoose_1.Schema.Types.ObjectId,

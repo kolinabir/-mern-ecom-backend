@@ -36,6 +36,15 @@ const addNewOrderIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, fu
             }
         }
         const result = yield order_model_1.Order.create(Object.assign(Object.assign({}, payload), { orderedBy: _id, cartAdded: false }));
+        //reduce the quantity of the product
+        for (const product of products) {
+            const productDetails = yield product_model_1.Product.findById(product.productId);
+            if (productDetails) {
+                yield product_model_1.Product.findByIdAndUpdate(product.productId, {
+                    quantity: productDetails.quantity - product.quantity,
+                });
+            }
+        }
         // Check if the ordered products are in the user's cart and remove them
         const cartItems = yield cart_model_1.Cart.findOne({ cartAddedBy: _id });
         if (cartItems) {

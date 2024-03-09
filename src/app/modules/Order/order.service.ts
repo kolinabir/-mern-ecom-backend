@@ -31,6 +31,15 @@ const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
       orderedBy: _id,
       cartAdded: false,
     })
+    //reduce the quantity of the product
+    for (const product of products) {
+      const productDetails = await Product.findById(product.productId)
+      if (productDetails) {
+        await Product.findByIdAndUpdate(product.productId, {
+          quantity: productDetails.quantity - product.quantity,
+        })
+      }
+    }
 
     // Check if the ordered products are in the user's cart and remove them
     const cartItems = await Cart.findOne({ cartAddedBy: _id })

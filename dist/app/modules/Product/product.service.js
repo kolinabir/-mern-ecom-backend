@@ -42,14 +42,20 @@ const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* (
         // by virtual from product.model.ts
         path: 'reviews',
         select: 'review rating createdAt createdBy',
-    });
+    })
+        .where('quantity')
+        .gt(0);
+    ///check if quantity is more than 0
     const productsWithAverageRating = yield Promise.all(result.map((product) => __awaiter(void 0, void 0, void 0, function* () {
         const averageRating = yield product
             .populate('reviews')
             .then((populatedProduct) => populatedProduct.averageRating); // Update the type declaration of populatedProduct
         return Object.assign(Object.assign({}, product.toJSON()), { averageRating });
     })));
-    return productsWithAverageRating;
+    return {
+        products: productsWithAverageRating,
+        availableProduct: result.length,
+    };
 });
 const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.findById(id)
@@ -82,6 +88,23 @@ const getProductByCategoryFromDB = (id) => __awaiter(void 0, void 0, void 0, fun
     });
     return result;
 });
+const getQuantityOfZero = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.find()
+        .where('quantity')
+        .equals(0)
+        .populate({
+        path: 'category',
+        select: 'name',
+    })
+        .populate({
+        path: 'addedBy',
+        select: 'username',
+    });
+    return {
+        products: result,
+        availableProduct: result.length,
+    };
+});
 exports.ProductServices = {
     createProductIntoDB,
     getAllProductsFromDB,
@@ -89,4 +112,5 @@ exports.ProductServices = {
     updateProductFromDB,
     deleteProductFromDB,
     getProductByCategoryFromDB,
+    getQuantityOfZero,
 };
