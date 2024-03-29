@@ -8,8 +8,6 @@ export type TProducts = {
 export type TOrder = {
   products: TProducts[]
   customerName: string
-  district: string
-  thana: string
   address: string
   phoneNumber: string
   email?: string
