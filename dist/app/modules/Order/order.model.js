@@ -29,20 +29,6 @@ const OrderSchema = new mongoose_1.Schema({
             required: 'Customer name is required',
         },
     },
-    district: {
-        type: String,
-        required: true,
-        errorMessages: {
-            required: 'District is required',
-        },
-    },
-    thana: {
-        type: String,
-        required: true,
-        errorMessages: {
-            required: 'Thana is required',
-        },
-    },
     address: {
         type: String,
         required: false,
@@ -59,15 +45,9 @@ const OrderSchema = new mongoose_1.Schema({
     },
     email: {
         type: String,
-        errorMessages: {
-            required: 'Email is required',
-        },
     },
     additionalInfo: {
         type: String,
-        errorMessages: {
-            required: 'Additional info is required',
-        },
     },
     status: {
         type: String,

@@ -9,11 +9,8 @@ const createOrderValidationSchema = zod_1.z.object({
             quantity: zod_1.z.number().min(1),
         })),
         customerName: zod_1.z.string().min(3).max(255),
-        district: zod_1.z.string().min(3).max(255),
-        thana: zod_1.z.string().min(3).max(255),
         address: zod_1.z.string().min(3).max(255),
         phoneNumber: zod_1.z.number(),
-        email: zod_1.z.string().email(),
     }),
 });
 exports.orderValidateSchema = {

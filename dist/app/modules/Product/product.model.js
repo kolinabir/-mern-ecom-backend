@@ -45,7 +45,7 @@ const productSchema = new mongoose_1.Schema({
     policy: {
         type: String,
     },
-    color: String,
+    color: [String],
     addedBy: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User',
