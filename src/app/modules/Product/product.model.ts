@@ -37,7 +37,7 @@ const productSchema = new Schema<TProduct>(
     policy: {
       type: String,
     },
-    color: String,
+    color: [String],
     addedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

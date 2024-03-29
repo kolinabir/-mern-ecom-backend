@@ -9,7 +9,7 @@ export type TProduct = {
   companyName: string
   sellerName?: string
   policy?: string
-  color?: string
+  color?: string[]
   addedBy?: Types.ObjectId
   sizes?: string[]
   quantity: number
