@@ -1036,6 +1036,19 @@ _Here below- every page will contain 2 product _
 
 `http://localhost:5000/api/order?status=pending&sort=-createdAt&page=2&limit=3`
 
+##### Change Order Status
+
+`http://localhost:5000/api/order/change-status/:id`
+
+demo data
+don't forget to pass jwt of ADMIN
+
+```json
+{
+  "status": "delivered"
+}
+```
+
 #### GET any order by ID
 
 _Only Admin and the user who ordered that can view_

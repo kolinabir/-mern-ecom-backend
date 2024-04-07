@@ -76,6 +76,29 @@ const getOrderByMonth = catchAsync(async (req, res) => {
   })
 })
 
+const changeOrderStatus = catchAsync(async (req, res) => {
+  //check if user is admin
+  if (req.user?.role !== 'admin') {
+    sendResponse(res, {
+      statusCode: httpStatus.UNAUTHORIZED,
+      success: false,
+      message: 'Unauthorized',
+      data: null,
+    })
+    return
+  }
+  const result = await orderService.changeOrderStatus(
+    req.params.id,
+    req.body.status,
+  )
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order status changed successfully',
+    data: result,
+  })
+})
+
 export const orderController = {
   addNewOrder,
   getAllOrders,
@@ -83,4 +106,5 @@ export const orderController = {
   getAllOrdersOfAnUser,
   cartItemToOrder,
   getOrderByMonth,
+  changeOrderStatus,
 }

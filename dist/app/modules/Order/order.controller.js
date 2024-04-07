@@ -73,6 +73,26 @@ const getOrderByMonth = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result,
     });
 }));
+const changeOrderStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    //check if user is admin
+    if (((_b = req.user) === null || _b === void 0 ? void 0 : _b.role) !== 'admin') {
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_1.default.UNAUTHORIZED,
+            success: false,
+            message: 'Unauthorized',
+            data: null,
+        });
+        return;
+    }
+    const result = yield order_service_1.orderService.changeOrderStatus(req.params.id, req.body.status);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Order status changed successfully',
+        data: result,
+    });
+}));
 exports.orderController = {
     addNewOrder,
     getAllOrders,
@@ -80,4 +100,5 @@ exports.orderController = {
     getAllOrdersOfAnUser,
     cartItemToOrder,
     getOrderByMonth,
+    changeOrderStatus,
 };

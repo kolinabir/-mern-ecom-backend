@@ -22,6 +22,7 @@ router.post('/', (req, res, next) => {
 router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), order_controller_1.orderController.getAllOrders);
 router.get('/date', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), order_controller_1.orderController.getOrderByMonth);
 router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), order_controller_1.orderController.getSingleOrder);
+router.patch('/change-status/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), order_controller_1.orderController.changeOrderStatus);
 router.get('/user/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), order_controller_1.orderController.getAllOrdersOfAnUser);
 router.patch('/user/cartToOrder/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.user), order_controller_1.orderController.cartItemToOrder);
 exports.orderRoutes = router;

@@ -20,7 +20,8 @@ const addNewOrderIntoDB = async (payload: TOrder, _id: string | null) => {
 
   if (products.length > 0) {
     for (const product of products) {
-      const isProductExist = await Product.findById(product.productId)
+      console.log(product.productId)
+      const isProductExist = await Product.findOne({ _id: product.productId })
       if (!isProductExist) {
         throw new AppError(httpStatus.NOT_FOUND, 'Product not found')
       }
@@ -190,6 +191,17 @@ const getOrderByMonthFromDB = async (
   return { orders, totalPrice }
 }
 
+//change the status of the order
+const changeOrderStatus = async (id: string, status: string) => {
+  const order = await Order.findByIdAndUpdate(id, { status })
+  //return the updated order
+
+  const orderUpdated = await Order.findById(id).populate({
+    path: 'products.productId',
+  })
+  return orderUpdated
+}
+
 export const orderService = {
   addNewOrderIntoDB,
   getAllOrdersFromDB,
@@ -197,4 +209,5 @@ export const orderService = {
   getAllOrdersOfAnUserFromDB,
   cartItemToOrderIntoDB,
   getOrderByMonthFromDB,
+  changeOrderStatus,
 }

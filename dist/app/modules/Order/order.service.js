@@ -30,7 +30,8 @@ const addNewOrderIntoDB = (payload, _id) => __awaiter(void 0, void 0, void 0, fu
     }
     if (products.length > 0) {
         for (const product of products) {
-            const isProductExist = yield product_model_1.Product.findById(product.productId);
+            console.log(product.productId);
+            const isProductExist = yield product_model_1.Product.findOne({ _id: product.productId });
             if (!isProductExist) {
                 throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Product not found');
             }
@@ -167,6 +168,15 @@ const getOrderByMonthFromDB = (user, query) => __awaiter(void 0, void 0, void 0,
     }
     return { orders, totalPrice };
 });
+//change the status of the order
+const changeOrderStatus = (id, status) => __awaiter(void 0, void 0, void 0, function* () {
+    const order = yield order_model_1.Order.findByIdAndUpdate(id, { status });
+    //return the updated order
+    const orderUpdated = yield order_model_1.Order.findById(id).populate({
+        path: 'products.productId',
+    });
+    return orderUpdated;
+});
 exports.orderService = {
     addNewOrderIntoDB,
     getAllOrdersFromDB,
@@ -174,4 +184,5 @@ exports.orderService = {
     getAllOrdersOfAnUserFromDB,
     cartItemToOrderIntoDB,
     getOrderByMonthFromDB,
+    changeOrderStatus,
 };

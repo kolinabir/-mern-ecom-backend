@@ -29,6 +29,12 @@ router.get(
   orderController.getSingleOrder,
 )
 
+router.patch(
+  '/change-status/:id',
+  auth(USER_ROLE.admin),
+  orderController.changeOrderStatus,
+)
+
 router.get(
   '/user/:id',
   auth(USER_ROLE.admin, USER_ROLE.user),
